@@ -1,10 +1,7 @@
 extern crate iron;
-#[macro_use]
 extern crate mime;
 
-use std::{io, result};
-
-use iron::mime::mime;
+#[macro_use] use iron::mime::mime;
 use iron::prelude::*;
 use iron::status;
 use postgres::{Client, NoTls};
@@ -42,11 +39,11 @@ fn search_for_added_entity(client_connection: &mut postgres::Client) -> Result<(
 }
 
 fn gc(_request: &mut Request) -> IronResult<Response> {
-    let mut client = create_db_and_add_one_entity().expect("create error");
-    search_for_added_entity(&mut client);
+    //let mut client = create_db_and_add_one_entity().expect("create error");
+    //search_for_added_entity(&mut client);
     let mut response = Response::new();
     response.set_mut(status::Ok);
-    response.set_mut(mime!(Text/Html; Charset=Utf8));
+    response.headers.set(iron::headers::ContentType("text/html; charset=utf-8".parse::<iron::mime::Mime>().unwrap()));
     response.set_mut(r#"Well done"#);
     Ok(response)
 }
@@ -55,6 +52,6 @@ fn main() {
     let mut router = Router::new();
     router.get("/sql", gc, "root");
 
-    println!("Serving on http://localhost:3000...");
-    Iron::new(router).http("localhost:3000").unwrap();
+    println!("Serving on http://localhost:8080...");
+    Iron::new(router).http("localhost:8080").unwrap();
 }
