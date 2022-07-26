@@ -50,13 +50,14 @@ fn gc(_request: &mut Request) -> IronResult<Response> {
 }
 
 fn main() {
-    let port: u64 = env::var("PORT")
-        .and_then(|port| Ok(port.parse::<u64>().unwrap_or(default_port)))
+    let default_port:u16 = 8080;
+    let port: u16 = env::var("PORT")
+        .and_then(|port| Ok(port.parse::<u16>().unwrap_or(default_port)))
         .unwrap_or(default_port);
 
     let mut router = Router::new();
     router.get("/sql", gc, "root");
 
     println!("Serving on http://localhost:8080...");
-    Iron::new(router).http("localhost:"+port).unwrap();
+    Iron::new(router).http(("localhost", port)).unwrap();
 }
