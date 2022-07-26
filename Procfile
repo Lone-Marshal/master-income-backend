@@ -1,2 +1,2 @@
-worker: sh -c 'ls ; cd ./target ; ls ; cd ./release; ls'
+worker: sh -c 'cargo build --release'
 web: ./target/release/master-income-backend
