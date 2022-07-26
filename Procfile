@@ -1,1 +1,1 @@
-web: ./target/release/master-income-backend
+web: ./target/release/hello
